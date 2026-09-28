@@ -7,6 +7,44 @@ A step-by-step reference: start with a workforce model, represent it with C# inh
 This exercise uses **Entity Framework 6 (EF6)**, Code First, SQL Server, conventions, and Data Annotations. It uses no Fluent API mapping.
 
 
+## Key Concepts — Study Guide
+
+Use these main topics as your study map. Each link takes you to its detailed explanation in this README.
+
+| Key concept | Meaning to remember | Study section |
+| --- | --- | --- |
+| **TPH (Table Per Hierarchy)** | Store the entire employee inheritance hierarchy in one table. | [TPH table structure](#9-understand-the-resulting-tph-table) |
+| **Discriminator** | A column EF uses to identify which concrete employee type a row represents. | [Discriminator](#what-does-discriminator-do) |
+| **Inheritance** | Share common employee properties through a base class, then add properties in derived classes. | [Class design](#2-turn-the-requirements-into-a-class-design) |
+| **Abstract Base Class** | `Employee` defines shared information but cannot be instantiated directly. | [Employee](#5-define-the-abstract-employee-base-class) |
+| **Concrete / Derived Classes** | `FullTimeEmployee`, `PartTimeEmployee`, and `Contractor` are the types we instantiate. | [Employee types](#6-define-the-three-concrete-types) |
+| **Complex Type** | `Address` groups values without its own entity identity or separate table. | [Address](#4-define-address-as-a-complex-type) |
+| **Composition** | An employee **has an** address; the address is not a kind of employee. | [Class design](#2-turn-the-requirements-into-a-class-design) |
+| **Code First** | Start with C# classes, then use EF to derive the database model and migrations. | [Complete workflow](#13-review-the-complete-flow) |
+| **Entity Framework 6 (EF6)** | The framework used here to map objects to database data. | [EF6 package setup](#3-set-up-ef6) |
+| **Data Annotations** | Attributes such as `[ComplexType]` and `[Key]` express model information on classes and properties. | [ComplexType annotation](#4-define-address-as-a-complex-type) and [Key annotation](#5-define-the-abstract-employee-base-class) |
+| **Conventions** | Default EF mapping rules, including TPH for this inheritance hierarchy. | [Default TPH mapping](#why-does-this-produce-tph) |
+| **Primary Key / Identity** | `ID` identifies each employee row; SQL Server generates its value in this model. | [Employee key](#5-define-the-abstract-employee-base-class) |
+| **DbContext** | The object that connects the model to the database and tracks changes. | [Context](#7-create-the-dbcontext) |
+| **DbSet&lt;Employee&gt;** | The entity set through which we work with all three employee types. | [Why one base set is enough](#why-only-dbsetemployee) |
+| **Connection String** | Settings that select the database server and database used by the context. | [Connection configuration](#connection-configuration) |
+| **Migrations / InitialCreate** | Versioned schema-change code; `InitialCreate` describes the initial schema. | [Generate and read the migration](#8-generate-initialcreate) |
+| **Up / Down** | Migration methods describing the forward change and its reversal. | [Migration analysis](#read-the-migration-before-applying-it) |
+| **Update-Database** | Apply pending migrations to the configured database. | [Apply the migration](#10-apply-the-migration) |
+| **Nullable Columns / NULL** | A value may be missing because it is optional or because the property does not apply to that row's type. | [Derived-column nullability](#why-are-derived-type-columns-nullable) |
+| **HourlyRate / HourlyRate1** | Separate columns for the separately declared hourly-rate properties in this observed mapping. | [Duplicate property names](#why-hourlyrate-and-hourlyrate1) |
+| **Add / SaveChanges** | Track new objects, then persist their data to the database. | [Insertion behavior](#what-happens-during-insertion) |
+| **Database Inspection** | Compare stored values, discriminators, and nulls with the original C# objects. | [Inspect the final rows](#12-inspect-dboemployees) |
+
+### Suggested study order
+
+1. **Design:** requirements → inheritance → abstract and concrete classes → Address complex type.
+2. **Mapping:** Code First → Data Annotations and conventions → DbContext and DbSet → TPH.
+3. **Database structure:** migration → primary key → Discriminator → nullable columns → HourlyRate naming.
+4. **Execution:** Update-Database → create objects → Add → SaveChanges → inspect the rows.
+
+For each concept, practice answering: **What does it mean? Why do we use it here? Where can I see it in the code or database?**
+
 ## 1. Start with the requirements
 
 We want to store three kinds of workers:
@@ -218,7 +256,7 @@ namespace WorkforceManagement
 }
 ```
 
-### Why only `DbSet<Employee>`?
+### Why only DbSet<Employee>?
 
 All three concrete types are employees, so all can be added to the base set. EF6 discovers derived types in the same assembly as the base class; separate sets are unnecessary for this exercise. The number of `DbSet` properties does not, by itself, choose the inheritance mapping strategy. See [EF6 conventions](https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/conventions/built-in).
 
