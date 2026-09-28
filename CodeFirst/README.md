@@ -254,3 +254,61 @@ also add a nav-prop `ICollection<WorksFor> WorksFors` in each class **Employee**
 > Updates on Database Done Successfully through **migaration (updates(2, 3 and 4)) For Day-5**
 
 
+---
+
+# Day-6
+
+if there a relation that:
+Employee supervise department  
+and this department has more than one supervisor  
+
+
+- Department will have a collection of Employees **that already done**
+  and also has a collection of Employees but for **supervisor**
+- Employee will has two objects of Department one called **Dept** already done
+  and another object for supervisor **SupervisedDept**
+  and add a FK --> **SupervisedDepartmentID** 
+
+```cs
+public int DepartmentID { get; set; }
+public int? SupervisedDepartmentID { get; set; }
+
+// Navigation props
+[ForeignKey("DepartmentID")]
+public virtual Department Dept { get; set; }
+
+[ForeignKey("SupervisedDepartmentID")]
+public virtual Department SupervisedDept { get; set; }
+```
+
+there is a problem here: how could the context know the collection of Employees will get through the object of Dept and the collection of Supervisors will get through the object of SupervisedDept
+
+<br>
+
+to sole this problem we have attribute called --> **InverseProperty**
+
+```cs
+    [InverseProperty("Dept")]
+    public virtual ICollection<Employee> Employees { get; set; }
+
+    [InverseProperty("SupervisedDept")]
+    public virtual ICollection<Employee> Supervisors { get; set; }
+```
+
+<hr>
+
+### Complex Types 
+
+like Composite attribute at SQL 
+
+if we have Address
+```cs
+public string Address { get; set; }
+```
+
+that address consists of {city, street, zipcode}
+
+we can create a complex type through a property called --> **ComplexType**
+
+
+
