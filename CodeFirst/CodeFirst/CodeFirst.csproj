@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
@@ -75,6 +76,10 @@
     <Compile Include="Migrations\202609241816127_updates4.cs" />
     <Compile Include="Migrations\202609241816127_updates4.Designer.cs">
       <DependentUpon>202609241816127_updates4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202609281414042_AddComplexAddress.cs" />
+    <Compile Include="Migrations\202609281414042_AddComplexAddress.Designer.cs">
+      <DependentUpon>202609281414042_AddComplexAddress.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -101,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202609241816127_updates4.resx">
       <DependentUpon>202609241816127_updates4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202609281414042_AddComplexAddress.resx">
+      <DependentUpon>202609281414042_AddComplexAddress.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -11,16 +11,34 @@ namespace CodeFirst {
 
       
       context.Departments.Add(new Department {
-        Name = "SD"
+        Name = "SD",
+        Location = "El-mahalla"
       });
 
       context.SaveChanges();
       
 
-      foreach (var item in context.Departments) {
-        Console.WriteLine(item.Name);
-      }
+      //foreach (var item in context.Departments) {
+      //  Console.WriteLine(item.Name);
+      //}
 
+      // practice on ComplexTypes
+      var Emp_1 = new Employee {
+        Name = "Youssef",
+        Salary = 10000,
+        Birthdate = new DateTime(2016, 12, 12),
+
+        DepartmentID = 1,
+
+        Address = new Address {
+          City = "Mahalla",
+          Street = "Tawheed",
+          ZipCode = 2500
+        }
+      };
+
+      context.Employees.Add(Emp_1);
+      context.SaveChanges();
     }
   }
 }

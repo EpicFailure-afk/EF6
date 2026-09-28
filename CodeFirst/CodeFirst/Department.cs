@@ -16,8 +16,13 @@ namespace CodeFirst {
     [Required]
     public string Location { get; set; }
 
+    [InverseProperty("Dept")]
     public virtual ICollection<Employee> Employees { get; set; }
-    
+
+    [InverseProperty("SupervisedDept")]
+    public virtual ICollection<Employee> Supervisors { get; set; }
+
+
     // add relation 1-many between Department and Project
     public virtual ICollection<Project> Projects { get; set; }
   }

@@ -16,7 +16,8 @@ namespace CodeFirst {
     [Required, MaxLength(100)]
     public string Name { get; set; }
     public double Salary { get; set; }
-    public string Address { get; set; }
+    //public string Address { get; set; }
+    public Address Address { get; set; }
 
     [Column(TypeName = "Date")]
     public DateTime Birthdate { get; set; }
@@ -24,9 +25,15 @@ namespace CodeFirst {
     // add new prop to be a FK 
     // [ForeignKey("Dept")] 
     public int DepartmentID { get; set; }
+    public int? SupervisedDepartmentID { get; set; }
+
     // Navigation props
     [ForeignKey("DepartmentID")]
     public virtual Department Dept { get; set; }
+    
+    [ForeignKey("SupervisedDepartmentID")]
+    public virtual Department SupervisedDept { get; set; }
+
     public virtual ICollection<WorksFor> WorksFors { get; set; }
   }
 }
